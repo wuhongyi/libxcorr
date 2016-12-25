@@ -1,9 +1,10 @@
-#ifndef XCORR
-#define XCORR
+#ifndef XCORR_H
+#define XCORR_H
 
-#include <complex.h>
-#include <fftw3.h>
+void xcorr(void *signala, void *signalb, void *result, int N);
 
-void xcorr(fftw_complex *, fftw_complex *, fftw_complex *, int);
+void xcorr_fftw(void *signala, void *signalb, void *result, int N);
 
-#endif
+void xcorr_timedomain(void *signala, void *signalb, void *result, int N);
+
+#endif /* XCORR_H */

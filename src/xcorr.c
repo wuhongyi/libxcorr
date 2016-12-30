@@ -4,7 +4,6 @@
 #include <complex.h>
 #include "../include/xcorr.h"
 
-
 void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 {
 #ifdef FFTW_ENABLED
@@ -15,7 +14,6 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 	// zero padding
 	memcpy(signala_ext + (N - 1), signala, sizeof(complex) * N);
 	memcpy(signalb_ext, signalb, sizeof(complex) * N);
-	/* Have FFTW, using FFT cross-correlation */
 	fftw_complex * outa = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
 	fftw_complex * outb = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
 	fftw_complex * out = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
@@ -54,23 +52,16 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 
 void xcorr_timedomain(void *signala, void *signalb, void *result, int N)
 {
-	int N2 = 2 * N - 1;
-	complex * signala_ext = (complex *) calloc(N2, sizeof(complex));
-	complex * signalb_ext = (complex *) calloc(N2, sizeof(complex));
-	// zero padding
-	memcpy(signala_ext + (N - 1), signala, sizeof(complex) * N);
-	memcpy(signalb_ext, signalb, sizeof(complex) * N);
-	/* No FFTW, using time-domain cross-correlation */
-	complex acf;
-	for (int tau = 0; tau < N2; ++tau) {
-		acf = 0 + 0*I;
-		for (int i = 0; i < N2; ++i) {
-			acf += signala_ext[(i+tau) % N2] * conj(signalb_ext[i % N2]);
+	for (int tau = 0; tau < 2*N-1; ++tau) {
+		complex acf = 0 + 0*I;
+		for (int i = 0; i < N; ++i) {
+			const int signala_idx = (i+tau)%(2*N-1);
+			const complex conjb = conj(((complex*)signalb)[i]);
+			const double factor = (signala_idx >= N) ? ((complex*)signala)[signala_idx-N] : 1.0;
+			acf += factor * conjb;
 		}
-		memcpy((complex*) result + tau, &acf, sizeof(complex));
+		((complex*)result)[tau] = acf;
 	}
-	free(signala_ext);
-	free(signalb_ext);
 	return;
 }
 
@@ -82,5 +73,3 @@ void xcorr(void *signala, void *signalb, void *result, int N)
 	return xcorr_timedomain(signala, signalb, result, N);
 #endif /* FFTW_ENABLED */
 }
-
-

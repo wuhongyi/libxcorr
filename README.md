@@ -25,8 +25,6 @@ extern "C" {
 }
 ```
 
-To use in a CMake project, you can use [Findxcorr.cmake](./CMakeModules/Findxcorr.cmake).
-
 ### Dependencies
 
 FFTW3 is an optional dependency.

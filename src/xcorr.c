@@ -14,13 +14,19 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 	// zero padding
 	memcpy(signala_ext + (N - 1), signala, sizeof(complex) * N);
 	memcpy(signalb_ext, signalb, sizeof(complex) * N);
-	fftw_complex * outa = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
-	fftw_complex * outb = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
-	fftw_complex * out = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * N2);
+	fftw_complex * outa = (fftw_complex *) fftw_malloc(sizeof(
+							  fftw_complex) * N2);
+	fftw_complex * outb = (fftw_complex *) fftw_malloc(sizeof(
+							  fftw_complex) * N2);
+	fftw_complex * out = (fftw_complex *) fftw_malloc(sizeof(
+							fftw_complex) * N2);
 
-	fftw_plan pa = fftw_plan_dft_1d(N2, signala_ext, outa, FFTW_FORWARD, FFTW_ESTIMATE);
-	fftw_plan pb = fftw_plan_dft_1d(N2, signalb_ext, outb, FFTW_FORWARD, FFTW_ESTIMATE);
-	fftw_plan px = fftw_plan_dft_1d(N2, out, result, FFTW_BACKWARD, FFTW_ESTIMATE);
+	fftw_plan pa = fftw_plan_dft_1d(N2, signala_ext, outa, FFTW_FORWARD,
+					FFTW_ESTIMATE);
+	fftw_plan pb = fftw_plan_dft_1d(N2, signalb_ext, outb, FFTW_FORWARD,
+					FFTW_ESTIMATE);
+	fftw_plan px = fftw_plan_dft_1d(N2, out, result, FFTW_BACKWARD,
+					FFTW_ESTIMATE);
 
 	fftw_execute(pa);
 	fftw_execute(pb);
@@ -57,7 +63,8 @@ void xcorr_timedomain(void *signala, void *signalb, void *result, int N)
 		for (int i = 0; i < N; ++i) {
 			const int signala_idx = (i+tau)%(2*N-1);
 			const complex conjb = conj(((complex*)signalb)[i]);
-			const double factor = (signala_idx >= N) ? ((complex*)signala)[signala_idx-N] : 1.0;
+			const double factor = (signala_idx >= N) ?
+				((complex*)signala)[signala_idx-N] : 1.0;
 			acf += factor * conjb;
 		}
 		((complex*)result)[tau] = acf;

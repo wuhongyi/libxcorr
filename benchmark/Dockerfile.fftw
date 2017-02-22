@@ -1,5 +1,0 @@
-FROM centos
-MAINTAINER sevag.hanssian@gmail.com
-
-RUN yum update -y
-RUN yum install -y fftw-devel

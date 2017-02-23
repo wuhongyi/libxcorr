@@ -9,17 +9,17 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 #ifdef FFTW_ENABLED
 #include <fftw3.h>
 	int N2 = 2 * N - 1;
+
 	complex * signala_ext = (complex *) calloc(N2, sizeof(complex));
 	complex * signalb_ext = (complex *) calloc(N2, sizeof(complex));
+
 	// zero padding
 	memcpy(signala_ext + (N - 1), signala, sizeof(complex) * N);
 	memcpy(signalb_ext, signalb, sizeof(complex) * N);
-	fftw_complex * outa = (fftw_complex *) fftw_malloc(sizeof(
-							  fftw_complex) * N2);
-	fftw_complex * outb = (fftw_complex *) fftw_malloc(sizeof(
-							  fftw_complex) * N2);
-	fftw_complex * out = (fftw_complex *) fftw_malloc(sizeof(
-							fftw_complex) * N2);
+
+	fftw_complex * outa = fftw_alloc_complex(N2);
+	fftw_complex * outb = fftw_alloc_complex(N2);
+	fftw_complex * out = fftw_alloc_complex(N2);
 
 	fftw_plan pa = fftw_plan_dft_1d(N2, signala_ext, outa, FFTW_FORWARD,
 					FFTW_ESTIMATE);

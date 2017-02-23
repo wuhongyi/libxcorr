@@ -27,9 +27,7 @@ extern "C" {
 
 ### Dependencies
 
-FFTW3 is an optional dependency.
-
-If you don't have FFTW3, `xcorr_fftw` is unavailable and `xcorr` calls `xcorr_timedomain`. Otherwise, `xcorr` calls `xcorr_fftw`.
+FFTW3 is a required dependency. TODO is to pass a compiler flag to compile without FFTW3, to explicitly use the time-domain xcorr function.
 
 ### Compatible with C and C++
 

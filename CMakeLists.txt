@@ -7,19 +7,10 @@ set (INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # find third party modules
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
-find_package (FFTW)
+find_package (FFTW REQUIRED)
 # end find third party modules
 
-# for testing time-domain xcorr by pretending FFTW is not installed
-# set (FFTW_FOUND "False")
-
-set (LIBS "m")
-if (FFTW_FOUND)
-  LIST (APPEND LIBS "fftw3")
-  add_definitions (-DFFTW_ENABLED)
-endif (FFTW_FOUND)
-
-add_library (xcorr SHARED ${SRC_DIR}/fftw.c ${SRC_DIR}/timedomain.c ${SRC_DIR}/generic.c)
-target_link_libraries (xcorr ${LIBS})
+add_library (xcorr SHARED ${SRC_DIR}/fftw.c ${SRC_DIR}/timedomain.c)
+target_link_libraries (xcorr m fftw3)
 install (TARGETS xcorr DESTINATION /usr/local/lib)
 install (FILES ${INCLUDE_DIR}/xcorr.h DESTINATION /usr/local/include)

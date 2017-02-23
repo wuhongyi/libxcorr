@@ -1,8 +1,8 @@
+#include "../include/xcorr.h"
+#include <complex.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <complex.h>
-#include "../include/xcorr.h"
 
 void xcorr_timedomain(void *signala, void *signalb, void *result, int N)
 {

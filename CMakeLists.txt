@@ -19,7 +19,7 @@ if (FFTW_FOUND)
   add_definitions (-DFFTW_ENABLED)
 endif (FFTW_FOUND)
 
-add_library (xcorr SHARED ${SRC_DIR}/xcorr.c)
+add_library (xcorr SHARED ${SRC_DIR}/fftw.c ${SRC_DIR}/timedomain.c ${SRC_DIR}/generic.c)
 target_link_libraries (xcorr ${LIBS})
 install (TARGETS xcorr DESTINATION /usr/local/lib)
 install (FILES ${INCLUDE_DIR}/xcorr.h DESTINATION /usr/local/include)

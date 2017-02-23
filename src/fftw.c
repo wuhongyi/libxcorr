@@ -55,28 +55,3 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N)
 	exit(-1);
 #endif /* FFTW_ENABLED */
 }
-
-void xcorr_timedomain(void *signala, void *signalb, void *result, int N)
-{
-	for (int tau = 0; tau < 2*N-1; ++tau) {
-		complex acf = 0 + 0*I;
-		for (int i = 0; i < N; ++i) {
-			const int signala_idx = (i+tau)%(2*N-1);
-			const complex conjb = conj(((complex*)signalb)[i]);
-			const double factor = (signala_idx >= N) ?
-				((complex*)signala)[signala_idx-N] : 1.0;
-			acf += factor * conjb;
-		}
-		((complex*)result)[tau] = acf;
-	}
-	return;
-}
-
-void xcorr(void *signala, void *signalb, void *result, int N)
-{
-#ifdef FFTW_ENABLED
-	return xcorr_fftw(signala, signalb, result, N);
-#else
-	return xcorr_timedomain(signala, signalb, result, N);
-#endif /* FFTW_ENABLED */
-}

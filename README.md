@@ -9,8 +9,8 @@ This is a C and C++ compatible cross-correlation library.
 Cmake project:
 
 ```
-mkdir build
-cd build && cmake ..
+mkdir build && cd build
+cmake ..
 make
 sudo make install
 ```
@@ -27,8 +27,10 @@ extern "C" {
 
 ### Dependencies
 
-FFTW3 is a required dependency. TODO is to pass a compiler flag to compile without FFTW3, to explicitly use the time-domain xcorr function.
+FFTW3 is a required dependency for the `xcorr_fftw` function. To compile without FFTW (and only use `xcorr_timedomain`), use the following CMake flag:
+
+`cmake -DNO_FFTW=ON`
 
 ### Compatible with C and C++
 
-Originally I did convoluted things with `ifdef __cplusplus` in an `inline` function in `xcorr.h` to cast from `std::complex<double>` to `_Complex`, but now I avoid all of that by just using `void *` ptrs.
+Uses `void *` ptrs to avoid any C `_Complex*` and CPP `std::complex<double>` interop black magic.

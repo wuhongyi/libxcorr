@@ -63,14 +63,14 @@ void xcorr_fftw_r2c(void *signala, void *signalb, void *result,
 	memcpy(signala_ext + (N - 1), signala, sizeof(double) * N);
 	memcpy(signalb_ext, signalb, sizeof(double) * N);
 
-	complex * outa = fftw_alloc_complex(N2);
-	complex * outb = fftw_alloc_complex(N2);
+	fftw_complex * outa = fftw_alloc_complex(N2);
+	fftw_complex * outb = fftw_alloc_complex(N2);
 	fftw_complex * out = fftw_alloc_complex(N2);
 
 	fftw_plan pa = fftw_plan_dft_r2c_1d(N2, signala_ext, outa,
-					    FFTW_FORWARD | FFTW_ESTIMATE);
+					    FFTW_ESTIMATE);
 	fftw_plan pb = fftw_plan_dft_r2c_1d(N2, signalb_ext, outb,
-					    FFTW_FORWARD | FFTW_ESTIMATE);
+					    FFTW_ESTIMATE);
 	fftw_plan px = fftw_plan_dft_1d(N2, out, result, FFTW_BACKWARD,
 					FFTW_ESTIMATE);
 

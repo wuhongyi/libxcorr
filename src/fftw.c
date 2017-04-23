@@ -97,3 +97,16 @@ void xcorr_fftw_r2c(void *signala, void *signalb, void *result,
 	free(signalb_ext);
 	return;
 }
+
+void xcorr_fftw_r2r(void *signala, void *signalb, void *result,
+		    int N)
+{
+	int N2 = 2 * N - 1;
+	complex * result_cmplx = (complex *) calloc(N2, sizeof(complex));
+	xcorr_fftw_r2c(signala, signalb, result_cmplx, N);
+	for (int x = 0; x < 2*N-1; ++x) {
+		double real = creal(result_cmplx[x]);
+		double real_dest = ((double*) result)[x];
+		memcpy(&real_dest, &real, sizeof(double));
+	}
+}

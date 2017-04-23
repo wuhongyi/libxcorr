@@ -7,6 +7,8 @@ void xcorr_fftw(void *signala, void *signalb, void *result, int N);
 
 void xcorr_fftw_r2c(void *signala, void *signalb, void *result, int N);
 
+void xcorr_fftw_r2r(void *signala, void *signalb, void *result, int N);
+
 void xcorr_timedomain(void *signala, void *signalb, void *result, int N);
 
 #endif /* XCORR_H */
